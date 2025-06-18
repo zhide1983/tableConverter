@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TableClip - 示例效果</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        h1, h2 {
+            color: #667eea;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        
+        .example-section {
+            margin-bottom: 40px;
+        }
+        
+        .format-demo {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .format-demo h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+        
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tr:hover {
+            background-color: #e3f2fd;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            font-weight: 500;
+        }
+        
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 TableClip - 示例效果展示</h1>
+        
+        <div class="note success">
+            <strong>🎉 恭喜！</strong> 这个页面展示了 TableClip 转换后的各种格式效果。
+        </div>
+
+        <div class="example-section">
+            <h2>📋 原始Excel表格</h2>
+            <p>假设我们有以下 Excel 表格数据：</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>部门</th>
+                        <th>季度</th>
+                        <th>销售额</th>
+                        <th>增长率</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="2" class="highlight">销售部</td>
+                        <td>Q1</td>
+                        <td>¥1,200,000</td>
+                        <td>+15%</td>
+                        <td>超额完成</td>
+                    </tr>
+                    <tr>
+                        <td>Q2</td>
+                        <td>¥1,350,000</td>
+                        <td>+12%</td>
+                        <td>稳步增长</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" class="highlight">市场部</td>
+                        <td>Q1</td>
+                        <td>¥800,000</td>
+                        <td>+8%</td>
+                        <td>达成目标</td>
+                    </tr>
+                    <tr>
+                        <td>Q2</td>
+                        <td>¥920,000</td>
+                        <td>+15%</td>
+                        <td>表现优异</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="example-section">
+            <h2>🔄 转换格式示例</h2>
+
+            <div class="format-demo">
+                <h3>🌐 HTML 格式</h3>
+                <p>完整的 HTML 表格，保留合并单元格和样式：</p>
+                <pre><code>&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;部门&lt;/th&gt;
+      &lt;th&gt;季度&lt;/th&gt;
+      &lt;th&gt;销售额&lt;/th&gt;
+      &lt;th&gt;增长率&lt;/th&gt;
+      &lt;th&gt;备注&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td rowspan="2" style="background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%); font-weight: 500;"&gt;销售部&lt;/td&gt;
+      &lt;td&gt;Q1&lt;/td&gt;
+      &lt;td&gt;¥1,200,000&lt;/td&gt;
+      &lt;td&gt;+15%&lt;/td&gt;
+      &lt;td&gt;超额完成&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Q2&lt;/td&gt;
+      &lt;td&gt;¥1,350,000&lt;/td&gt;
+      &lt;td&gt;+12%&lt;/td&gt;
+      &lt;td&gt;稳步增长&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+            </div>
+
+            <div class="format-demo">
+                <h3>📝 Markdown 格式</h3>
+                <p>标准 Markdown 表格语法：</p>
+                <pre><code>| 部门 | 季度 | 销售额 | 增长率 | 备注 |
+| --- | --- | --- | --- | --- |
+| 销售部 (1×2) | Q1 | ¥1,200,000 | +15% | 超额完成 |
+|  | Q2 | ¥1,350,000 | +12% | 稳步增长 |
+| 市场部 (1×2) | Q1 | ¥800,000 | +8% | 达成目标 |
+|  | Q2 | ¥920,000 | +15% | 表现优异 |</code></pre>
+            </div>
+
+            <div class="format-demo">
+                <h3>🧵 Textile 格式</h3>
+                <p>Textile 标记语言表格：</p>
+                <pre><code>|_. 部门|_. 季度|_. 销售额|_. 增长率|_. 备注|
+|/2. 销售部|Q1|¥1,200,000|+15%|超额完成|
+|Q2|¥1,350,000|+12%|稳步增长|
+|/2. 市场部|Q1|¥800,000|+8%|达成目标|
+|Q2|¥920,000|+15%|表现优异|</code></pre>
+            </div>
+
+            <div class="format-demo">
+                <h3>📄 reStructuredText 格式</h3>
+                <p>RST 文档格式表格：</p>
+                <pre><code>+========+=====+=============+=======+==========+
+| 部门   | 季度| 销售额      | 增长率| 备注     |
++========+=====+=============+=======+==========+
+|销售部  | Q1  | ¥1,200,000  | +15%  | 超额完成 |
+|[1×2]   +-----+-------------+-------+----------+
+|        | Q2  | ¥1,350,000  | +12%  | 稳步增长 |
++--------+-----+-------------+-------+----------+
+|市场部  | Q1  | ¥800,000    | +8%   | 达成目标 |
+|[1×2]   +-----+-------------+-------+----------+
+|        | Q2  | ¥920,000    | +15%  | 表现优异 |
++========+=====+=============+=======+==========+</code></pre>
+            </div>
+        </div>
+
+        <div class="example-section">
+            <h2>⚡ 使用流程演示</h2>
+            
+            <div class="note">
+                <strong>步骤1:</strong> 在 Excel 中选择表格区域并复制 (Ctrl+C)
+            </div>
+            
+            <div class="note">
+                <strong>步骤2:</strong> 打开 TableClip 工具页面
+            </div>
+            
+            <div class="note">
+                <strong>步骤3:</strong> 点击 "粘贴表格数据" 按钮
+            </div>
+            
+            <div class="note">
+                <strong>步骤4:</strong> 选择目标格式 (HTML/Markdown/Textile/RST)
+            </div>
+            
+            <div class="note success">
+                <strong>步骤5:</strong> 复制生成的代码或下载文件
+            </div>
+        </div>
+
+        <div class="example-section">
+            <h2>🎯 特色功能</h2>
+            
+            <ul>
+                <li><strong>🔄 智能解析:</strong> 自动检测表格结构和合并单元格</li>
+                <li><strong>🎨 样式保留:</strong> 可选择保留原始格式和样式</li>
+                <li><strong>📱 响应式支持:</strong> 生成移动端友好的表格代码</li>
+                <li><strong>⚡ 实时预览:</strong> 即时查看转换效果</li>
+                <li><strong>💾 多种导出:</strong> 支持复制到剪贴板或下载文件</li>
+                <li><strong>🔒 隐私安全:</strong> 纯前端处理，数据不上传</li>
+            </ul>
+        </div>
+
+        <div class="example-section">
+            <h2>🚀 立即使用</h2>
+            <p>
+                准备好体验 TableClip 的强大功能了吗？
+                <a href="index.html" style="color: #667eea; text-decoration: none; font-weight: bold;">点击这里开始使用 →</a>
+            </p>
+        </div>
+
+        <footer style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e9ecef; color: #6c757d;">
+            <p><strong>TableClip</strong> - 让表格格式转换变得简单高效！</p>
+            <p>© 2024 TableClip Project. 开源免费使用。</p>
+        </footer>
+    </div>
+</body>
+</html> 

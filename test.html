@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TableClip - 合并单元格测试</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .test-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+        }
+        
+        .test-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        .test-table th,
+        .test-table td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        
+        .test-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        .merged-cell {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            font-weight: 500;
+        }
+        
+        .output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+            font-size: 13px;
+        }
+        
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 TableClip 合并单元格测试</h1>
+        
+        <div class="note">
+            <strong>测试说明：</strong> 这个页面用于测试和验证合并单元格的修复效果。
+            下面是一个包含合并单元格的测试表格，以及期望的输出格式。
+        </div>
+
+        <div class="test-section">
+            <h2>📊 测试表格 (A-C列，1-4行，A2~A4合并)</h2>
+            
+            <table class="test-table">
+                <thead>
+                    <tr>
+                        <th>列A</th>
+                        <th>列B</th>
+                        <th>列C</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="3" class="merged-cell">合并内容</td>
+                        <td>B2</td>
+                        <td>C2</td>
+                    </tr>
+                    <tr>
+                        <td>B3</td>
+                        <td>C3</td>
+                    </tr>
+                    <tr>
+                        <td>B4</td>
+                        <td>C4</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p><strong>说明：</strong> A2单元格向下合并到A4，包含文本"合并内容"</p>
+        </div>
+
+        <div class="test-section">
+            <h2>✅ 期望的 Markdown 输出</h2>
+            <p>合并单元格内容应该显示在左上角第一个位置（A2），其他位置（A3、A4）留空：</p>
+            
+            <div class="output">| 列A | 列B | 列C |
+| --- | --- | --- |
+| 合并内容 (1×3) | B2 | C2 |
+|  | B3 | C3 |
+|  | B4 | C4 |</div>
+        </div>
+
+        <div class="test-section">
+            <h2>✅ 期望的 HTML 输出</h2>
+            <p>HTML 格式应该正确使用 rowspan 属性：</p>
+            
+            <div class="output">&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;列A&lt;/th&gt;
+      &lt;th&gt;列B&lt;/th&gt;
+      &lt;th&gt;列C&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td rowspan="3"&gt;合并内容&lt;/td&gt;
+      &lt;td&gt;B2&lt;/td&gt;
+      &lt;td&gt;C2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;B3&lt;/td&gt;
+      &lt;td&gt;C3&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;B4&lt;/td&gt;
+      &lt;td&gt;C4&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</div>
+        </div>
+
+        <div class="test-section">
+            <h2>✅ 期望的 Textile 输出</h2>
+            <p>Textile 格式使用 /n. 语法表示行合并：</p>
+            
+            <div class="output">|_. 列A|_. 列B|_. 列C|
+|/3. 合并内容|B2|C2|
+|B3|C3|
+|B4|C4|</div>
+        </div>
+
+        <div class="test-section">
+            <h2>✅ 期望的 RST 输出</h2>
+            <p>RST 格式应该生成正确的边框和对齐：</p>
+            
+            <div class="output">+=================+=====+=====+
+| 列A             | 列B | 列C |
++=================+=====+=====+
+| 合并内容 [1×3]  | B2  | C2  |
+|                 +-----+-----+
+|                 | B3  | C3  |
++                 +-----+-----+
+|                 | B4  | C4  |
++=================+=====+=====+</div>
+        </div>
+
+        <div class="test-section">
+            <h2>🧪 如何测试</h2>
+            <ol>
+                <li>复制上面的测试表格（选择包括表头的整个表格）</li>
+                <li>打开 <a href="index.html" style="color: #667eea;">TableClip 主页面</a></li>
+                <li>点击"粘贴表格数据"按钮</li>
+                <li>切换不同的输出格式，检查是否与期望输出一致</li>
+                <li>特别关注：
+                    <ul>
+                        <li><strong>Markdown:</strong> 合并区域的内容是否只在第一个位置显示，其他位置是否为空</li>
+                        <li><strong>RST:</strong> 是否还会报错，格式是否正确</li>
+                        <li><strong>HTML & Textile:</strong> 是否保持原有的正确功能</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h2>📋 复制用测试数据</h2>
+            <p>可以直接复制下面的数据进行测试：</p>
+            
+            <table class="test-table" id="copyTable">
+                <tr>
+                    <td>列A</td>
+                    <td>列B</td>
+                    <td>列C</td>
+                </tr>
+                <tr>
+                    <td>合并内容</td>
+                    <td>B2</td>
+                    <td>C2</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>B3</td>
+                    <td>C3</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>B4</td>
+                    <td>C4</td>
+                </tr>
+            </table>
+            
+            <p><em>注意：这个简化的表格模拟了Excel中合并单元格复制出来的效果。</em></p>
+        </div>
+
+        <div class="note success">
+            <strong>✅ 修复完成！</strong> 
+            <ul>
+                <li>Markdown 格式现在会将合并单元格内容显示在第一个位置，其他位置留空</li>
+                <li>RST 格式的索引越界错误已修复，现在可以正常生成</li>
+                <li>HTML 和 Textile 格式保持原有功能不变</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TableClip - 基础功能测试</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .test-container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .test-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .test-title {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        
+        .test-data {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+        
+        .test-table {
+            margin: 20px 0;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        .test-table th,
+        .test-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .test-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .result-area {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            min-height: 100px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .nav-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-section">
+            <div class="nav-header" style="position: relative;">
+                <a href="index.html" class="back-link">← 返回测试导航</a>
+                <h1>基础功能测试</h1>
+                <p>测试简单表格解析和各种格式导出功能</p>
+            </div>
+        </div>
+
+        <!-- 测试用例 1: 简单数据表格 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 1: 简单数据表格</h2>
+            <p>测试基本的表格解析和格式转换功能</p>
+            
+            <h3>测试数据 (复制下面的表格):</h3>
+            <table class="test-table">
+                <tr>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>城市</th>
+                    <th>职业</th>
+                </tr>
+                <tr>
+                    <td>张三</td>
+                    <td>25</td>
+                    <td>北京</td>
+                    <td>软件工程师</td>
+                </tr>
+                <tr>
+                    <td>李四</td>
+                    <td>30</td>
+                    <td>上海</td>
+                    <td>产品经理</td>
+                </tr>
+                <tr>
+                    <td>王五</td>
+                    <td>28</td>
+                    <td>深圳</td>
+                    <td>UI设计师</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(1)">复制测试数据</button>
+            
+            <h3>期望结果验证:</h3>
+            <div>
+                <strong>HTML格式:</strong>
+                <div class="result-area" id="html-result-1"></div>
+                
+                <strong>Markdown格式:</strong>
+                <div class="result-area" id="markdown-result-1"></div>
+                
+                <strong>Textile格式:</strong>
+                <div class="result-area" id="textile-result-1"></div>
+                
+                <strong>RST格式:</strong>
+                <div class="result-area" id="rst-result-1"></div>
+            </div>
+        </div>
+
+        <!-- 测试用例 2: 包含中文和特殊字符 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 2: 包含中文和特殊字符</h2>
+            <p>测试中文字符、特殊符号和数字的处理</p>
+            
+            <h3>测试数据:</h3>
+            <table class="test-table">
+                <tr>
+                    <th>产品名称</th>
+                    <th>价格 (￥)</th>
+                    <th>评分 ⭐</th>
+                    <th>备注</th>
+                </tr>
+                <tr>
+                    <td>iPhone 15 Pro</td>
+                    <td>8,999</td>
+                    <td>4.8/5.0</td>
+                    <td>最新款 & 高性能</td>
+                </tr>
+                <tr>
+                    <td>MacBook Air M2</td>
+                    <td>7,999</td>
+                    <td>4.9/5.0</td>
+                    <td>轻薄便携 | 续航强</td>
+                </tr>
+                <tr>
+                    <td>AirPods Pro (第2代)</td>
+                    <td>1,899</td>
+                    <td>4.7/5.0</td>
+                    <td>降噪效果 "excellent"</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(2)">复制测试数据</button>
+            
+            <h3>期望结果验证:</h3>
+            <div>
+                <strong>HTML格式:</strong>
+                <div class="result-area" id="html-result-2"></div>
+                
+                <strong>Markdown格式:</strong>
+                <div class="result-area" id="markdown-result-2"></div>
+                
+                <strong>Textile格式:</strong>
+                <div class="result-area" id="textile-result-2"></div>
+                
+                <strong>RST格式:</strong>
+                <div class="result-area" id="rst-result-2"></div>
+            </div>
+        </div>
+
+        <!-- 测试用例 3: 数值和日期表格 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 3: 数值和日期表格</h2>
+            <p>测试数字、日期、百分比等格式的处理</p>
+            
+            <h3>测试数据:</h3>
+            <table class="test-table">
+                <tr>
+                    <th>日期</th>
+                    <th>收入</th>
+                    <th>支出</th>
+                    <th>利润率</th>
+                    <th>状态</th>
+                </tr>
+                <tr>
+                    <td>2024-01-01</td>
+                    <td>15,000.50</td>
+                    <td>8,500.00</td>
+                    <td>43.33%</td>
+                    <td>✅ 正常</td>
+                </tr>
+                <tr>
+                    <td>2024-01-02</td>
+                    <td>18,200.75</td>
+                    <td>9,800.25</td>
+                    <td>46.15%</td>
+                    <td>✅ 正常</td>
+                </tr>
+                <tr>
+                    <td>2024-01-03</td>
+                    <td>12,500.00</td>
+                    <td>11,200.00</td>
+                    <td>10.40%</td>
+                    <td>⚠️ 注意</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(3)">复制测试数据</button>
+            
+            <h3>期望结果验证:</h3>
+            <div>
+                <strong>HTML格式:</strong>
+                <div class="result-area" id="html-result-3"></div>
+                
+                <strong>Markdown格式:</strong>
+                <div class="result-area" id="markdown-result-3"></div>
+                
+                <strong>Textile格式:</strong>
+                <div class="result-area" id="textile-result-3"></div>
+                
+                <strong>RST格式:</strong>
+                <div class="result-area" id="rst-result-3"></div>
+            </div>
+        </div>
+
+        <!-- 功能测试区域 -->
+        <div class="test-section">
+            <h2 class="test-title">交互式测试区域</h2>
+            <p>使用主应用功能进行实时测试</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="../index.html" target="_blank" class="copy-btn" style="display: inline-block; padding: 15px 30px; font-size: 1.1rem; text-decoration: none;">
+                    打开主应用进行测试 →
+                </a>
+            </div>
+            
+            <h3>测试步骤:</h3>
+            <ol style="line-height: 1.8;">
+                <li>复制上面任一测试表格数据</li>
+                <li>在主应用中点击"粘贴表格数据"按钮</li>
+                <li>选择不同的导出格式 (HTML/Markdown/Textile/RST)</li>
+                <li>验证输出结果是否符合预期</li>
+                <li>测试各种配置选项的效果</li>
+            </ol>
+            
+            <h3>验证要点:</h3>
+            <ul style="line-height: 1.8;">
+                <li>✓ 表格结构解析正确</li>
+                <li>✓ 表头识别准确</li>
+                <li>✓ 特殊字符正确转义</li>
+                <li>✓ 中文字符显示正常</li>
+                <li>✓ 数字和符号保持格式</li>
+                <li>✓ 各种格式输出语法正确</li>
+                <li>✓ 复制功能正常工作</li>
+                <li>✓ 下载功能正常工作</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 复制测试表格数据到剪贴板
+        function copyTableData(testCase) {
+            const testData = {
+                1: `姓名	年龄	城市	职业
+张三	25	北京	软件工程师
+李四	30	上海	产品经理
+王五	28	深圳	UI设计师`,
+                2: `产品名称	价格 (￥)	评分 ⭐	备注
+iPhone 15 Pro	8,999	4.8/5.0	最新款 & 高性能
+MacBook Air M2	7,999	4.9/5.0	轻薄便携 | 续航强
+AirPods Pro (第2代)	1,899	4.7/5.0	降噪效果 "excellent"`,
+                3: `日期	收入	支出	利润率	状态
+2024-01-01	15,000.50	8,500.00	43.33%	✅ 正常
+2024-01-02	18,200.75	9,800.25	46.15%	✅ 正常
+2024-01-03	12,500.00	11,200.00	10.40%	⚠️ 注意`
+            };
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(testData[testCase]).then(() => {
+                    alert('测试数据已复制到剪贴板！\n现在可以在主应用中进行粘贴测试。');
+                }).catch(err => {
+                    console.error('复制失败:', err);
+                    fallbackCopy(testData[testCase]);
+                });
+            } else {
+                fallbackCopy(testData[testCase]);
+            }
+        }
+        
+        // 后备复制方法
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                alert('测试数据已复制到剪贴板！\n现在可以在主应用中进行粘贴测试。');
+            } catch (err) {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制测试数据。');
+            }
+            document.body.removeChild(textArea);
+        }
+        
+        // 页面加载完成后显示预期结果
+        document.addEventListener('DOMContentLoaded', function() {
+            showExpectedResults();
+        });
+        
+        function showExpectedResults() {
+            // 测试用例 1 的预期结果
+            document.getElementById('html-result-1').textContent = `<table>
+  <tr>
+    <th>姓名</th>
+    <th>年龄</th>
+    <th>城市</th>
+    <th>职业</th>
+  </tr>
+  <tr>
+    <td>张三</td>
+    <td>25</td>
+    <td>北京</td>
+    <td>软件工程师</td>
+  </tr>
+  <tr>
+    <td>李四</td>
+    <td>30</td>
+    <td>上海</td>
+    <td>产品经理</td>
+  </tr>
+  <tr>
+    <td>王五</td>
+    <td>28</td>
+    <td>深圳</td>
+    <td>UI设计师</td>
+  </tr>
+</table>`;
+
+            document.getElementById('markdown-result-1').textContent = `| 姓名 | 年龄 | 城市 | 职业     |
+| ---- | ---- | ---- | -------- |
+| 张三 | 25   | 北京 | 软件工程师 |
+| 李四 | 30   | 上海 | 产品经理  |
+| 王五 | 28   | 深圳 | UI设计师  |`;
+
+            document.getElementById('textile-result-1').textContent = `|_.姓名|_.年龄|_.城市|_.职业|
+|张三|25|北京|软件工程师|
+|李四|30|上海|产品经理|
+|王五|28|深圳|UI设计师|`;
+
+            document.getElementById('rst-result-1').textContent = `+------+------+------+----------+
+| 姓名 | 年龄 | 城市 | 职业     |
++======+======+======+==========+
+| 张三 | 25   | 北京 | 软件工程师|
++------+------+------+----------+
+| 李四 | 30   | 上海 | 产品经理 |
++------+------+------+----------+
+| 王五 | 28   | 深圳 | UI设计师 |
++------+------+------+----------+`;
+        }
+    </script>
+</body>
+</html> 

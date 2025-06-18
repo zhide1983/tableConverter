@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TableClip - 区域合并测试</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .test-container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .test-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .test-title {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        
+        .test-table {
+            margin: 20px 0;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        .test-table th,
+        .test-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        .test-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .merge-demo {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            font-weight: bold;
+        }
+        
+        .merge-demo2 {
+            background: #fce4ec;
+            border: 2px solid #e91e63;
+            font-weight: bold;
+        }
+        
+        .merge-demo3 {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            font-weight: bold;
+        }
+        
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .nav-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .note {
+            background: #e7f3ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-section">
+            <div class="nav-header" style="position: relative;">
+                <a href="index.html" class="back-link">← 返回测试导航</a>
+                <h1>区域合并测试</h1>
+                <p>测试复杂区域合并和矩形合并的解析转换功能</p>
+            </div>
+        </div>
+
+        <!-- 测试用例 1: 矩形区域合并 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 1: 矩形区域合并</h2>
+            <p>测试规则矩形区域的合并处理</p>
+            
+            <h3>测试数据:</h3>
+            <table class="test-table">
+                <tr>
+                    <th>时间</th>
+                    <th>周一</th>
+                    <th>周二</th>
+                    <th>周三</th>
+                    <th>周四</th>
+                    <th>周五</th>
+                </tr>
+                <tr>
+                    <th>09:00-10:00</th>
+                    <td colspan="2" rowspan="2" class="merge-demo">高等数学<br/>A101教室</td>
+                    <td>英语</td>
+                    <td colspan="2" rowspan="2" class="merge-demo2">物理实验<br/>实验楼</td>
+                </tr>
+                <tr>
+                    <th>10:00-11:00</th>
+                    <td>计算机</td>
+                </tr>
+                <tr>
+                    <th>11:00-12:00</th>
+                    <td>体育</td>
+                    <td colspan="3" rowspan="2" class="merge-demo3">专业课设计<br/>项目讨论</td>
+                    <td>选修课</td>
+                </tr>
+                <tr>
+                    <th>14:00-15:00</th>
+                    <td>午休</td>
+                    <td>自习</td>
+                </tr>
+                <tr>
+                    <th>15:00-16:00</th>
+                    <td colspan="5" class="merge-demo">全体大会 - 大礼堂</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(1)">复制测试数据</button>
+            
+            <div class="note">
+                <strong>测试要点:</strong>
+                <ul>
+                    <li>同时包含colspan和rowspan的矩形合并</li>
+                    <li>多个不同大小的合并区域</li>
+                    <li>合并区域之间的相互影响</li>
+                    <li>复杂表格结构的完整保持</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 测试用例 2: 不规则合并形状 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 2: 不规则合并形状</h2>
+            <p>测试L型、T型等不规则合并形状</p>
+            
+            <h3>测试数据:</h3>
+            <table class="test-table">
+                <tr>
+                    <th>分类</th>
+                    <th>Q1</th>
+                    <th>Q2</th>
+                    <th>Q3</th>
+                    <th>Q4</th>
+                    <th>全年</th>
+                </tr>
+                <tr>
+                    <th>收入</th>
+                    <td>100</td>
+                    <td>120</td>
+                    <td>110</td>
+                    <td>130</td>
+                    <td rowspan="4" class="merge-demo">总计<br/><br/>460万<br/><br/>增长15%</td>
+                </tr>
+                <tr>
+                    <th>成本</th>
+                    <td colspan="2" class="merge-demo2">上半年: 150万</td>
+                    <td colspan="2" class="merge-demo3">下半年: 160万</td>
+                </tr>
+                <tr>
+                    <th>利润</th>
+                    <td>70</td>
+                    <td>90</td>
+                    <td>50</td>
+                    <td>70</td>
+                </tr>
+                <tr>
+                    <th>增长率</th>
+                    <td colspan="4" class="merge-demo">整体增长趋势良好，下半年需要控制成本</td>
+                </tr>
+                <tr>
+                    <th colspan="2" class="merge-demo2">备注说明</th>
+                    <td colspan="4">所有数据单位：万元，增长率相比去年同期</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(2)">复制测试数据</button>
+            
+            <div class="note">
+                <strong>测试要点:</strong>
+                <ul>
+                    <li>L型合并区域的处理</li>
+                    <li>T型和十字型合并处理</li>
+                    <li>不同方向合并的组合</li>
+                    <li>边角位置的特殊合并</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 测试用例 3: 多个分离合并区域 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 3: 多个分离合并区域</h2>
+            <p>测试表格中多个互不相连的合并区域</p>
+            
+            <h3>测试数据:</h3>
+            <table class="test-table">
+                <tr>
+                    <th>产品</th>
+                    <th>功能A</th>
+                    <th>功能B</th>
+                    <th>功能C</th>
+                    <th>功能D</th>
+                    <th>总分</th>
+                </tr>
+                <tr>
+                    <th>iPhone</th>
+                    <td colspan="2" class="merge-demo">相机系统: 95分</td>
+                    <td>85</td>
+                    <td colspan="2" class="merge-demo2">性能: 98分</td>
+                </tr>
+                <tr>
+                    <th>Samsung</th>
+                    <td>90</td>
+                    <td>88</td>
+                    <td colspan="2" class="merge-demo3">屏幕显示: 96分</td>
+                    <td>92</td>
+                </tr>
+                <tr>
+                    <th>Huawei</th>
+                    <td colspan="2" class="merge-demo">AI功能: 94分</td>
+                    <td>90</td>
+                    <td>87</td>
+                    <td>90</td>
+                </tr>
+                <tr>
+                    <th rowspan="2" class="merge-demo2">小米<br/>系列</th>
+                    <td>小米13</td>
+                    <td>85</td>
+                    <td colspan="2" class="merge-demo3">性价比: 优秀</td>
+                    <td>88</td>
+                </tr>
+                <tr>
+                    <td>小米Pro</td>
+                    <td>88</td>
+                    <td>90</td>
+                    <td>85</td>
+                    <td>87</td>
+                </tr>
+                <tr>
+                    <th colspan="6" class="merge-demo">评测说明: 所有分数基于专业测试，满分100分</th>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(3)">复制测试数据</button>
+            
+            <div class="note">
+                <strong>测试要点:</strong>
+                <ul>
+                    <li>多个独立合并区域并存</li>
+                    <li>不同大小的分离合并处理</li>
+                    <li>合并区域与单独单元格混合</li>
+                    <li>跨行和跨列合并的组合</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 测试用例 4: 嵌套合并结构 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 4: 复杂嵌套结构</h2>
+            <p>测试表格中的复杂嵌套和层级结构</p>
+            
+            <div class="warning">
+                <strong>注意:</strong> 这是最复杂的测试用例，用于验证解析器对极端情况的处理能力。
+            </div>
+            
+            <h3>测试数据:</h3>
+            <table class="test-table">
+                <tr>
+                    <th rowspan="2">区域</th>
+                    <th colspan="4" class="merge-demo">销售数据</th>
+                    <th rowspan="2">备注</th>
+                </tr>
+                <tr>
+                    <th colspan="2" class="merge-demo2">上半年</th>
+                    <th colspan="2" class="merge-demo3">下半年</th>
+                </tr>
+                <tr>
+                    <th rowspan="3" class="merge-demo">华北</th>
+                    <th>Q1</th>
+                    <th>Q2</th>
+                    <th>Q3</th>
+                    <th>Q4</th>
+                    <th rowspan="6" class="merge-demo2">整体<br/>业绩<br/>评估<br/><br/>优秀</th>
+                </tr>
+                <tr>
+                    <td>120</td>
+                    <td>130</td>
+                    <td colspan="2" class="merge-demo3">下半年合计: 280</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="merge-demo">华北全年: 530万，增长12%</td>
+                </tr>
+                <tr>
+                    <th rowspan="3" class="merge-demo">华南</th>
+                    <td colspan="2" class="merge-demo2">上半年: 200</td>
+                    <td>110</td>
+                    <td>115</td>
+                </tr>
+                <tr>
+                    <td>95</td>
+                    <td>105</td>
+                    <td colspan="2" class="merge-demo3">下半年表现稳定</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="merge-demo">华南全年: 425万，增长8%</td>
+                </tr>
+                <tr>
+                    <th colspan="6" class="merge-demo">全国总计: 955万，平均增长10%，超额完成年度目标</th>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(4)">复制测试数据</button>
+            
+            <div class="note">
+                <strong>测试要点:</strong>
+                <ul>
+                    <li>多层级嵌套的表头结构</li>
+                    <li>复杂的行列合并组合</li>
+                    <li>不同层级合并的相互影响</li>
+                    <li>极端复杂表格的完整解析</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 功能测试区域 -->
+        <div class="test-section">
+            <h2 class="test-title">交互式测试区域</h2>
+            <p>使用主应用功能进行实时测试</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="../index.html" target="_blank" class="copy-btn" style="display: inline-block; padding: 15px 30px; font-size: 1.1rem; text-decoration: none;">
+                    打开主应用进行测试 →
+                </a>
+            </div>
+            
+            <h3>测试步骤:</h3>
+            <ol style="line-height: 1.8;">
+                <li>复制上面任一测试表格数据</li>
+                <li>在主应用中点击"粘贴表格数据"按钮</li>
+                <li>检查预览区域是否正确显示复杂合并结构</li>
+                <li>选择不同的导出格式验证输出</li>
+                <li>特别注意复杂合并的处理效果</li>
+            </ol>
+            
+            <h3>区域合并验证要点:</h3>
+            <ul style="line-height: 1.8;">
+                <li>✓ 矩形区域合并正确识别</li>
+                <li>✓ 不规则形状合并处理</li>
+                <li>✓ 多个分离区域独立处理</li>
+                <li>✓ 嵌套结构层级保持</li>
+                <li>✓ HTML中colspan和rowspan正确</li>
+                <li>✓ 合并内容完整保留</li>
+                <li>✓ 表格结构完全正确</li>
+                <li>✓ 各格式输出都正确</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 复制测试表格数据到剪贴板
+        function copyTableData(testCase) {
+            const testData = {
+                1: `时间	周一	周二	周三	周四	周五
+09:00-10:00	高等数学
+A101教室		英语	物理实验
+实验楼	
+10:00-11:00			计算机		
+11:00-12:00	体育	专业课设计
+项目讨论			选修课
+14:00-15:00	午休			自习
+15:00-16:00	全体大会 - 大礼堂				`,
+                2: `分类	Q1	Q2	Q3	Q4	全年
+收入	100	120	110	130	总计
+
+460万
+
+增长15%
+成本	上半年: 150万		下半年: 160万		
+利润	70	90	50	70	
+增长率	整体增长趋势良好，下半年需要控制成本			
+备注说明		所有数据单位：万元，增长率相比去年同期			`,
+                3: `产品	功能A	功能B	功能C	功能D	总分
+iPhone	相机系统: 95分		85	性能: 98分	
+Samsung	90	88	屏幕显示: 96分		92
+Huawei	AI功能: 94分		90	87	90
+小米
+系列	小米13	85	性价比: 优秀		88
+	小米Pro	88	90	85	87
+评测说明: 所有分数基于专业测试，满分100分					`,
+                4: `区域	销售数据			备注
+	上半年		下半年	
+华北	Q1	Q2	Q3	Q4	整体
+业绩
+评估
+
+优秀
+	120	130	下半年合计: 280		
+	华北全年: 530万，增长12%			
+华南	上半年: 200		110	115	
+	95	105	下半年表现稳定		
+	华南全年: 425万，增长8%			
+全国总计: 955万，平均增长10%，超额完成年度目标					`
+            };
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(testData[testCase]).then(() => {
+                    alert('测试数据已复制到剪贴板！\n现在可以在主应用中进行粘贴测试。');
+                }).catch(err => {
+                    console.error('复制失败:', err);
+                    fallbackCopy(testData[testCase]);
+                });
+            } else {
+                fallbackCopy(testData[testCase]);
+            }
+        }
+        
+        // 后备复制方法
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                alert('测试数据已复制到剪贴板！\n现在可以在主应用中进行粘贴测试。');
+            } catch (err) {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制测试数据。');
+            }
+            document.body.removeChild(textArea);
+        }
+    </script>
+</body>
+</html> 

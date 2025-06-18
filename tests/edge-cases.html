@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TableClip - 边界情况测试</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .test-container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .test-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .test-title {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        
+        .test-table {
+            margin: 20px 0;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        .test-table th,
+        .test-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .test-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .merge-demo {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+        }
+        
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .nav-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .note {
+            background: #e7f3ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .error {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .small-table {
+            width: auto;
+            margin: 10px 0;
+        }
+        
+        .unicode-demo {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-section">
+            <div class="nav-header" style="position: relative;">
+                <a href="index.html" class="back-link">← 返回测试导航</a>
+                <h1>边界情况测试</h1>
+                <p>测试极端情况和边界条件的处理能力</p>
+            </div>
+        </div>
+
+        <!-- 测试用例 1: 空表格处理 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 1: 空表格处理</h2>
+            <p>测试空数据、空行、空列的处理</p>
+            
+            <h3>测试数据 1a - 完全空表格:</h3>
+            <table class="test-table small-table">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData('1a')">复制空表格数据</button>
+            
+            <h3>测试数据 1b - 部分空内容:</h3>
+            <table class="test-table small-table">
+                <tr>
+                    <th>标题1</th>
+                    <th></th>
+                    <th>标题3</th>
+                </tr>
+                <tr>
+                    <td>数据1</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>数据2</td>
+                    <td></td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData('1b')">复制部分空内容</button>
+            
+            <div class="note">
+                <strong>测试要点:</strong>
+                <ul>
+                    <li>空单元格的正确处理</li>
+                    <li>空行和空列的过滤</li>
+                    <li>部分空内容的保留</li>
+                    <li>表格结构的完整性维护</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 测试用例 2: 单行单列表格 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 2: 单行单列表格</h2>
+            <p>测试最小表格结构的处理</p>
+            
+            <h3>测试数据 2a - 单个单元格:</h3>
+            <table class="test-table small-table">
+                <tr>
+                    <td>单个数据</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData('2a')">复制单元格数据</button>
+            
+            <h3>测试数据 2b - 单行多列:</h3>
+            <table class="test-table small-table">
+                <tr>
+                    <td>数据1</td>
+                    <td>数据2</td>
+                    <td>数据3</td>
+                    <td>数据4</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData('2b')">复制单行数据</button>
+            
+            <h3>测试数据 2c - 单列多行:</h3>
+            <table class="test-table small-table">
+                <tr>
+                    <td>数据1</td>
+                </tr>
+                <tr>
+                    <td>数据2</td>
+                </tr>
+                <tr>
+                    <td>数据3</td>
+                </tr>
+                <tr>
+                    <td>数据4</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData('2c')">复制单列数据</button>
+            
+            <div class="note">
+                <strong>测试要点:</strong>
+                <ul>
+                    <li>最小表格的正确解析</li>
+                    <li>单行表格的表头识别</li>
+                    <li>单列表格的格式处理</li>
+                    <li>边界情况的稳定性</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 测试用例 3: 全合并表格 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 3: 全合并表格</h2>
+            <p>测试整个表格都是合并单元格的极端情况</p>
+            
+            <h3>测试数据 3a - 全表合并:</h3>
+            <table class="test-table">
+                <tr>
+                    <td colspan="4" rowspan="3" class="merge-demo">整个表格都是一个大的合并单元格<br/>包含多行文本内容<br/>测试极端合并情况</td>
+                </tr>
+                <tr></tr>
+                <tr></tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData('3a')">复制全合并数据</button>
+            
+            <h3>测试数据 3b - 多个大合并:</h3>
+            <table class="test-table">
+                <tr>
+                    <td colspan="2" rowspan="2" class="merge-demo">左上合并区域</td>
+                    <td colspan="2" rowspan="2" class="merge-demo">右上合并区域</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td colspan="2" rowspan="2" class="merge-demo">左下合并区域</td>
+                    <td colspan="2" rowspan="2" class="merge-demo">右下合并区域</td>
+                </tr>
+                <tr></tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData('3b')">复制四宫格合并</button>
+            
+            <div class="warning">
+                <strong>注意:</strong> 这种极端合并情况可能在某些格式中表现不佳，特别是Markdown格式。
+            </div>
+        </div>
+
+        <!-- 测试用例 4: 特殊字符和Unicode -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 4: 特殊字符和Unicode内容</h2>
+            <p>测试特殊字符、表情符号、Unicode字符的处理</p>
+            
+            <h3>测试数据:</h3>
+            <table class="test-table unicode-demo">
+                <tr>
+                    <th>类型</th>
+                    <th>内容</th>
+                    <th>备注</th>
+                </tr>
+                <tr>
+                    <td>表情符号</td>
+                    <td>😀😃😄😁😆😅😂🤣😊😇🙂🙃😉😌😍🥰😘😗</td>
+                    <td>Emoji测试</td>
+                </tr>
+                <tr>
+                    <td>特殊符号</td>
+                    <td>©®™€£¥§¶†‡•…‰′″‴※‼⁇⁈⁉</td>
+                    <td>标点符号</td>
+                </tr>
+                <tr>
+                    <td>数学符号</td>
+                    <td>±×÷∞∑∏∫∂∇∆√∛∜∝∠∥⊥∈∉∪∩⊂⊃⊆⊇</td>
+                    <td>数学公式</td>
+                </tr>
+                <tr>
+                    <td>中文混合</td>
+                    <td>Hello世界！123测试αβγπθλμ</td>
+                    <td>多语言混合</td>
+                </tr>
+                <tr>
+                    <td>HTML字符</td>
+                    <td>&lt;div&gt;标签&lt;/div&gt; &amp; "引号" 'apostrophe'</td>
+                    <td>转义测试</td>
+                </tr>
+                <tr>
+                    <td>特殊空格</td>
+                    <td>普通 空格　全角空格 	制表符</td>
+                    <td>空白字符</td>
+                </tr>
+                <tr>
+                    <td>长文本</td>
+                    <td colspan="2">这是一个非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常长的文本，用来测试长内容的处理能力和换行效果。</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(4)">复制Unicode测试数据</button>
+            
+            <div class="note">
+                <strong>测试要点:</strong>
+                <ul>
+                    <li>Unicode字符的正确显示</li>
+                    <li>表情符号的宽度计算</li>
+                    <li>HTML特殊字符的转义</li>
+                    <li>长文本的格式处理</li>
+                    <li>不同语言字符的混合显示</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 测试用例 5: 极大表格性能测试 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 5: 性能测试</h2>
+            <p>测试大表格的处理性能（可选测试）</p>
+            
+            <div class="warning">
+                <strong>性能测试说明:</strong> 以下是大表格测试，可能会影响浏览器性能，请谨慎使用。
+            </div>
+            
+            <h3>生成测试数据:</h3>
+            <div style="margin: 20px 0;">
+                <label>行数: <input type="number" id="rowCount" value="50" min="10" max="100"></label>
+                <label style="margin-left: 20px;">列数: <input type="number" id="colCount" value="10" min="5" max="20"></label>
+                <button class="copy-btn" onclick="generateLargeTable()">生成大表格数据</button>
+            </div>
+            
+            <div class="note">
+                <strong>测试目标:</strong>
+                <ul>
+                    <li>大表格解析速度</li>
+                    <li>内存使用控制</li>
+                    <li>UI响应性能</li>
+                    <li>导出功能稳定性</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 功能测试区域 -->
+        <div class="test-section">
+            <h2 class="test-title">交互式测试区域</h2>
+            <p>使用主应用功能进行实时测试</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="../index.html" target="_blank" class="copy-btn" style="display: inline-block; padding: 15px 30px; font-size: 1.1rem; text-decoration: none;">
+                    打开主应用进行测试 →
+                </a>
+            </div>
+            
+            <h3>测试步骤:</h3>
+            <ol style="line-height: 1.8;">
+                <li>复制上面任一测试表格数据</li>
+                <li>在主应用中点击"粘贴表格数据"按钮</li>
+                <li>观察解析结果和错误处理</li>
+                <li>验证各种格式的输出效果</li>
+                <li>测试极端情况的稳定性</li>
+            </ol>
+            
+            <h3>边界情况验证要点:</h3>
+            <ul style="line-height: 1.8;">
+                <li>✓ 空数据不导致程序崩溃</li>
+                <li>✓ 最小表格正确处理</li>
+                <li>✓ 全合并表格格式正确</li>
+                <li>✓ 特殊字符正确转义</li>
+                <li>✓ Unicode字符正确显示</li>
+                <li>✓ 大表格性能可接受</li>
+                <li>✓ 错误信息提示清晰</li>
+                <li>✓ 异常情况优雅降级</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 复制测试表格数据到剪贴板
+        function copyTableData(testCase) {
+            const testData = {
+                '1a': `			
+			`,
+                '1b': `标题1		标题3
+数据1		
+	数据2	`,
+                '2a': `单个数据`,
+                '2b': `数据1	数据2	数据3	数据4`,
+                '2c': `数据1
+数据2
+数据3
+数据4`,
+                '3a': `整个表格都是一个大的合并单元格
+包含多行文本内容
+测试极端合并情况			`,
+                '3b': `左上合并区域		右上合并区域	
+			
+左下合并区域		右下合并区域	
+			`,
+                4: `类型	内容	备注
+表情符号	😀😃😄😁😆😅😂🤣😊😇🙂🙃😉😌😍🥰😘😗	Emoji测试
+特殊符号	©®™€£¥§¶†‡•…‰′″‴※‼⁇⁈⁉	标点符号
+数学符号	±×÷∞∑∏∫∂∇∆√∛∜∝∠∥⊥∈∉∪∩⊂⊃⊆⊇	数学公式
+中文混合	Hello世界！123测试αβγπθλμ	多语言混合
+HTML字符	<div>标签</div> & "引号" 'apostrophe'	转义测试
+特殊空格	普通 空格　全角空格 	制表符	空白字符
+长文本	这是一个非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常长的文本，用来测试长内容的处理能力和换行效果。		`
+            };
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(testData[testCase]).then(() => {
+                    alert('测试数据已复制到剪贴板！\n现在可以在主应用中进行粘贴测试。');
+                }).catch(err => {
+                    console.error('复制失败:', err);
+                    fallbackCopy(testData[testCase]);
+                });
+            } else {
+                fallbackCopy(testData[testCase]);
+            }
+        }
+        
+        // 生成大表格测试数据
+        function generateLargeTable() {
+            const rows = parseInt(document.getElementById('rowCount').value);
+            const cols = parseInt(document.getElementById('colCount').value);
+            
+            if (rows > 100 || cols > 20) {
+                alert('为了性能考虑，最大支持100行×20列的表格测试。');
+                return;
+            }
+            
+            let tableData = '';
+            
+            // 生成表头
+            for (let i = 1; i <= cols; i++) {
+                tableData += `列${i}`;
+                if (i < cols) tableData += '\t';
+            }
+            tableData += '\n';
+            
+            // 生成数据行
+            for (let row = 1; row <= rows; row++) {
+                for (let col = 1; col <= cols; col++) {
+                    tableData += `数据${row}-${col}`;
+                    if (col < cols) tableData += '\t';
+                }
+                if (row < rows) tableData += '\n';
+            }
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(tableData).then(() => {
+                    alert(`已生成${rows}×${cols}的大表格数据并复制到剪贴板！\n现在可以在主应用中进行性能测试。`);
+                }).catch(err => {
+                    console.error('复制失败:', err);
+                    fallbackCopy(tableData);
+                });
+            } else {
+                fallbackCopy(tableData);
+            }
+        }
+        
+        // 后备复制方法
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                alert('测试数据已复制到剪贴板！\n现在可以在主应用中进行粘贴测试。');
+            } catch (err) {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制测试数据。');
+            }
+            document.body.removeChild(textArea);
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TableClip - 行合并测试</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .test-container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .test-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .test-title {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        
+        .test-table {
+            margin: 20px 0;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        .test-table th,
+        .test-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .test-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .merge-demo {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+        }
+        
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .nav-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .note {
+            background: #e7f3ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-section">
+            <div class="nav-header" style="position: relative;">
+                <a href="index.html" class="back-link">← 返回测试导航</a>
+                <h1>行合并测试</h1>
+                <p>测试各种行合并单元格的解析和转换功能</p>
+            </div>
+        </div>
+
+        <!-- 测试用例 1: 表头行合并 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 1: 表头行合并</h2>
+            <p>测试表头中的行合并单元格处理</p>
+            
+            <h3>测试数据:</h3>
+            <table class="test-table">
+                <tr>
+                    <th colspan="2" class="merge-demo">员工信息</th>
+                    <th colspan="2" class="merge-demo">工作详情</th>
+                </tr>
+                <tr>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>部门</th>
+                    <th>职位</th>
+                </tr>
+                <tr>
+                    <td>张三</td>
+                    <td>25</td>
+                    <td>技术部</td>
+                    <td>前端工程师</td>
+                </tr>
+                <tr>
+                    <td>李四</td>
+                    <td>30</td>
+                    <td>产品部</td>
+                    <td>产品经理</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(1)">复制测试数据</button>
+            
+            <div class="note">
+                <strong>测试要点:</strong>
+                <ul>
+                    <li>表头的colspan合并是否正确识别</li>
+                    <li>HTML输出中是否保留colspan属性</li>
+                    <li>Markdown中合并信息是否正确标注</li>
+                    <li>其他格式中合并标记是否正确</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 测试用例 2: 数据行开头合并 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 2: 数据行开头合并</h2>
+            <p>测试数据行第一列的合并情况</p>
+            
+            <h3>测试数据:</h3>
+            <table class="test-table">
+                <tr>
+                    <th>部门</th>
+                    <th>姓名</th>
+                    <th>职位</th>
+                    <th>工作年限</th>
+                </tr>
+                <tr>
+                    <td rowspan="3" class="merge-demo">技术部</td>
+                    <td>张三</td>
+                    <td>前端工程师</td>
+                    <td>3年</td>
+                </tr>
+                <tr>
+                    <td>李四</td>
+                    <td>后端工程师</td>
+                    <td>5年</td>
+                </tr>
+                <tr>
+                    <td>王五</td>
+                    <td>测试工程师</td>
+                    <td>2年</td>
+                </tr>
+                <tr>
+                    <td rowspan="2" class="merge-demo">产品部</td>
+                    <td>赵六</td>
+                    <td>产品经理</td>
+                    <td>4年</td>
+                </tr>
+                <tr>
+                    <td>钱七</td>
+                    <td>UI设计师</td>
+                    <td>3年</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(2)">复制测试数据</button>
+            
+            <div class="note">
+                <strong>测试要点:</strong>
+                <ul>
+                    <li>rowspan合并是否正确识别</li>
+                    <li>合并单元格的内容是否正确提取</li>
+                    <li>被合并的空单元格是否正确处理</li>
+                    <li>表格结构完整性验证</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 测试用例 3: 数据行中间合并 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 3: 数据行中间合并</h2>
+            <p>测试数据行中间列的合并情况</p>
+            
+            <h3>测试数据:</h3>
+            <table class="test-table">
+                <tr>
+                    <th>项目</th>
+                    <th>阶段</th>
+                    <th>负责人</th>
+                    <th>开始时间</th>
+                    <th>状态</th>
+                </tr>
+                <tr>
+                    <td>电商平台</td>
+                    <td>需求分析</td>
+                    <td>张三</td>
+                    <td>2024-01-01</td>
+                    <td>已完成</td>
+                </tr>
+                <tr>
+                    <td>电商平台</td>
+                    <td colspan="2" class="merge-demo">开发阶段 - 李四负责</td>
+                    <td>2024-01-15</td>
+                    <td>进行中</td>
+                </tr>
+                <tr>
+                    <td>电商平台</td>
+                    <td>测试</td>
+                    <td>王五</td>
+                    <td>2024-02-01</td>
+                    <td>计划中</td>
+                </tr>
+                <tr>
+                    <td>移动App</td>
+                    <td colspan="3" class="merge-demo">准备阶段 - 团队讨论方案</td>
+                    <td>计划中</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(3)">复制测试数据</button>
+            
+            <div class="note">
+                <strong>测试要点:</strong>
+                <ul>
+                    <li>中间列的colspan合并处理</li>
+                    <li>跨越不同数量列的合并</li>
+                    <li>合并单元格内容的完整性</li>
+                    <li>非合并列的对齐是否正确</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 测试用例 4: 数据行末尾合并 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 4: 数据行末尾合并</h2>
+            <p>测试数据行最后几列的合并情况</p>
+            
+            <h3>测试数据:</h3>
+            <table class="test-table">
+                <tr>
+                    <th>学生</th>
+                    <th>科目</th>
+                    <th>成绩</th>
+                    <th>备注</th>
+                </tr>
+                <tr>
+                    <td>张三</td>
+                    <td>数学</td>
+                    <td colspan="2" class="merge-demo">95分 - 优秀表现</td>
+                </tr>
+                <tr>
+                    <td>张三</td>
+                    <td>英语</td>
+                    <td>88</td>
+                    <td>良好</td>
+                </tr>
+                <tr>
+                    <td>李四</td>
+                    <td>数学</td>
+                    <td>92</td>
+                    <td>优秀</td>
+                </tr>
+                <tr>
+                    <td>李四</td>
+                    <td>英语</td>
+                    <td colspan="2" class="merge-demo">85分 - 需要加强口语练习</td>
+                </tr>
+                <tr>
+                    <td>王五</td>
+                    <td colspan="3" class="merge-demo">缺考 - 因病请假，待补考</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(4)">复制测试数据</button>
+            
+            <div class="note">
+                <strong>测试要点:</strong>
+                <ul>
+                    <li>末尾列的合并处理</li>
+                    <li>合并到表格边界的情况</li>
+                    <li>长文本内容的处理</li>
+                    <li>不同行合并列数的变化</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 功能测试区域 -->
+        <div class="test-section">
+            <h2 class="test-title">交互式测试区域</h2>
+            <p>使用主应用功能进行实时测试</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="../index.html" target="_blank" class="copy-btn" style="display: inline-block; padding: 15px 30px; font-size: 1.1rem; text-decoration: none;">
+                    打开主应用进行测试 →
+                </a>
+            </div>
+            
+            <h3>测试步骤:</h3>
+            <ol style="line-height: 1.8;">
+                <li>复制上面任一测试表格数据</li>
+                <li>在主应用中点击"粘贴表格数据"按钮</li>
+                <li>检查预览区域是否正确显示合并结构</li>
+                <li>选择不同的导出格式验证输出</li>
+                <li>特别注意"保持合并单元格"选项的效果</li>
+            </ol>
+            
+            <h3>行合并验证要点:</h3>
+            <ul style="line-height: 1.8;">
+                <li>✓ HTML格式中colspan属性正确</li>
+                <li>✓ Markdown格式中合并信息标注清晰</li>
+                <li>✓ Textile格式中\n.语法正确</li>
+                <li>✓ RST格式中合并标记正确</li>
+                <li>✓ 合并内容完整保留</li>
+                <li>✓ 被合并位置正确留空</li>
+                <li>✓ 表格整体结构完整</li>
+                <li>✓ 不同长度合并正确处理</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 复制测试表格数据到剪贴板
+        function copyTableData(testCase) {
+            const testData = {
+                1: `员工信息		工作详情	
+姓名	年龄	部门	职位
+张三	25	技术部	前端工程师
+李四	30	产品部	产品经理`,
+                2: `部门	姓名	职位	工作年限
+技术部	张三	前端工程师	3年
+	李四	后端工程师	5年
+	王五	测试工程师	2年
+产品部	赵六	产品经理	4年
+	钱七	UI设计师	3年`,
+                3: `项目	阶段	负责人	开始时间	状态
+电商平台	需求分析	张三	2024-01-01	已完成
+电商平台	开发阶段 - 李四负责		2024-01-15	进行中
+电商平台	测试	王五	2024-02-01	计划中
+移动App	准备阶段 - 团队讨论方案			计划中`,
+                4: `学生	科目	成绩	备注
+张三	数学	95分 - 优秀表现	
+张三	英语	88	良好
+李四	数学	92	优秀
+李四	英语	85分 - 需要加强口语练习	
+王五	缺考 - 因病请假，待补考		`
+            };
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(testData[testCase]).then(() => {
+                    alert('测试数据已复制到剪贴板！\n现在可以在主应用中进行粘贴测试。');
+                }).catch(err => {
+                    console.error('复制失败:', err);
+                    fallbackCopy(testData[testCase]);
+                });
+            } else {
+                fallbackCopy(testData[testCase]);
+            }
+        }
+        
+        // 后备复制方法
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                alert('测试数据已复制到剪贴板！\n现在可以在主应用中进行粘贴测试。');
+            } catch (err) {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制测试数据。');
+            }
+            document.body.removeChild(textArea);
+        }
+    </script>
+</body>
+</html> 

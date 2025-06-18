@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TableClip - 表格格式转换工具</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-table"></i>
+                <h1>TableClip</h1>
+            </div>
+            <p class="subtitle">从 Excel 剪贴板转换表格到多种格式</p>
+        </header>
+
+        <main class="main-content">
+            <!-- 操作面板 -->
+            <div class="control-panel">
+                <div class="paste-section">
+                    <button id="pasteBtn" class="btn btn-primary">
+                        <i class="fas fa-paste"></i>
+                        粘贴表格数据
+                    </button>
+                    <div class="paste-info">
+                        <i class="fas fa-info-circle"></i>
+                        从 Excel 复制表格区域，然后点击粘贴按钮
+                    </div>
+                </div>
+
+                <div class="format-options">
+                    <h3>导出格式</h3>
+                    <div class="format-buttons">
+                        <button id="exportHtml" class="btn btn-format" title="导出为 HTML">
+                            <i class="fab fa-html5"></i>
+                            HTML
+                        </button>
+                        <button id="exportMarkdown" class="btn btn-format" title="导出为 Markdown">
+                            <i class="fab fa-markdown"></i>
+                            Markdown
+                        </button>
+                        <button id="exportTextile" class="btn btn-format" title="导出为 Textile">
+                            <i class="fas fa-file-alt"></i>
+                            Textile
+                        </button>
+                        <button id="exportRst" class="btn btn-format" title="导出为 reStructuredText">
+                            <i class="fas fa-file-code"></i>
+                            RST
+                        </button>
+                    </div>
+                </div>
+
+                <div class="settings">
+                    <h3>通用选项</h3>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="preserveMerged" checked>
+                            保持合并单元格
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="includeStyles" checked>
+                            包含样式信息
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="responsiveTable">
+                            响应式表格
+                        </label>
+                    </div>
+                </div>
+
+                <div class="html-styles" id="htmlStylesPanel" style="display: none;">
+                    <h3>HTML 样式选项</h3>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="headerRowBold" checked>
+                            标题行加粗
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="headerColBold">
+                            标题列加粗
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="alternatingRows" checked>
+                            阴阳行背景
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label for="stylePreset">样式预设：</label>
+                        <select id="stylePreset" class="style-select">
+                            <option value="default">默认样式</option>
+                            <option value="minimal">简约风格</option>
+                            <option value="professional">专业风格</option>
+                            <option value="modern">现代风格</option>
+                            <option value="custom">自定义</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 预览区域 -->
+            <div class="preview-section">
+                <div class="preview-header">
+                    <h3>表格预览</h3>
+                    <button id="clearBtn" class="btn btn-secondary">
+                        <i class="fas fa-trash"></i>
+                        清空
+                    </button>
+                </div>
+                <div id="tablePreview" class="table-container">
+                    <div class="empty-state">
+                        <i class="fas fa-table"></i>
+                        <p>暂无表格数据</p>
+                        <p class="hint">请从 Excel 复制表格并粘贴</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 输出区域 -->
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>输出代码</h3>
+                    <div class="output-controls">
+                        <button id="copyOutput" class="btn btn-secondary">
+                            <i class="fas fa-copy"></i>
+                            复制代码
+                        </button>
+                        <button id="downloadOutput" class="btn btn-secondary">
+                            <i class="fas fa-download"></i>
+                            下载文件
+                        </button>
+                    </div>
+                </div>
+                <div class="output-container">
+                    <pre id="outputCode" class="output-code">
+<!-- 转换后的代码将显示在这里 -->
+                    </pre>
+                </div>
+            </div>
+        </main>
+
+        <!-- 状态提示 -->
+        <div id="statusMessage" class="status-message"></div>
+    </div>
+
+    <script src="js/tableParser.js"></script>
+    <script src="js/formatExporters.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html> 

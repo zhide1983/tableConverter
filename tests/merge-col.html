@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TableClip - 列合并测试</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .test-container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .test-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .test-title {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        
+        .test-table {
+            margin: 20px 0;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        .test-table th,
+        .test-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .test-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .merge-demo {
+            background: #d1ecf1;
+            border: 2px solid #17a2b8;
+        }
+        
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .nav-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .note {
+            background: #e7f3ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-section">
+            <div class="nav-header" style="position: relative;">
+                <a href="index.html" class="back-link">← 返回测试导航</a>
+                <h1>列合并测试</h1>
+                <p>测试各种列合并单元格的解析和转换功能</p>
+            </div>
+        </div>
+
+        <!-- 测试用例 1: 第一列合并 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 1: 第一列合并</h2>
+            <p>测试第一列的垂直合并处理</p>
+            
+            <h3>测试数据:</h3>
+            <table class="test-table">
+                <tr>
+                    <th>公司</th>
+                    <th>部门</th>
+                    <th>员工</th>
+                    <th>职位</th>
+                </tr>
+                <tr>
+                    <td rowspan="4" class="merge-demo">阿里巴巴</td>
+                    <td>技术部</td>
+                    <td>张三</td>
+                    <td>高级工程师</td>
+                </tr>
+                <tr>
+                    <td>技术部</td>
+                    <td>李四</td>
+                    <td>架构师</td>
+                </tr>
+                <tr>
+                    <td>产品部</td>
+                    <td>王五</td>
+                    <td>产品经理</td>
+                </tr>
+                <tr>
+                    <td>设计部</td>
+                    <td>赵六</td>
+                    <td>UI设计师</td>
+                </tr>
+                <tr>
+                    <td rowspan="3" class="merge-demo">腾讯</td>
+                    <td>游戏部</td>
+                    <td>钱七</td>
+                    <td>游戏策划</td>
+                </tr>
+                <tr>
+                    <td>社交部</td>
+                    <td>孙八</td>
+                    <td>后端工程师</td>
+                </tr>
+                <tr>
+                    <td>广告部</td>
+                    <td>周九</td>
+                    <td>数据分析师</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(1)">复制测试数据</button>
+            
+            <div class="note">
+                <strong>测试要点:</strong>
+                <ul>
+                    <li>第一列rowspan合并是否正确识别</li>
+                    <li>跨越多行的合并处理</li>
+                    <li>不同合并行数的连续处理</li>
+                    <li>合并单元格内容的准确性</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 测试用例 2: 中间列合并 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 2: 中间列合并</h2>
+            <p>测试中间列的垂直合并处理</p>
+            
+            <h3>测试数据:</h3>
+            <table class="test-table">
+                <tr>
+                    <th>项目</th>
+                    <th>模块</th>
+                    <th>功能</th>
+                    <th>开发者</th>
+                    <th>状态</th>
+                </tr>
+                <tr>
+                    <td>电商平台</td>
+                    <td rowspan="3" class="merge-demo">用户系统</td>
+                    <td>用户注册</td>
+                    <td>张三</td>
+                    <td>已完成</td>
+                </tr>
+                <tr>
+                    <td>电商平台</td>
+                    <td>用户登录</td>
+                    <td>李四</td>
+                    <td>已完成</td>
+                </tr>
+                <tr>
+                    <td>电商平台</td>
+                    <td>密码找回</td>
+                    <td>王五</td>
+                    <td>开发中</td>
+                </tr>
+                <tr>
+                    <td>电商平台</td>
+                    <td rowspan="2" class="merge-demo">支付系统</td>
+                    <td>支付宝支付</td>
+                    <td>赵六</td>
+                    <td>已完成</td>
+                </tr>
+                <tr>
+                    <td>电商平台</td>
+                    <td>微信支付</td>
+                    <td>钱七</td>
+                    <td>测试中</td>
+                </tr>
+                <tr>
+                    <td>移动App</td>
+                    <td rowspan="2" class="merge-demo">推送系统</td>
+                    <td>消息推送</td>
+                    <td>孙八</td>
+                    <td>计划中</td>
+                </tr>
+                <tr>
+                    <td>移动App</td>
+                    <td>活动推送</td>
+                    <td>周九</td>
+                    <td>计划中</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(2)">复制测试数据</button>
+            
+            <div class="note">
+                <strong>测试要点:</strong>
+                <ul>
+                    <li>中间列的rowspan合并识别</li>
+                    <li>多个中间列合并区域处理</li>
+                    <li>合并与非合并行的交替</li>
+                    <li>表格结构的完整性保持</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 测试用例 3: 最后列合并 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 3: 最后列合并</h2>
+            <p>测试最后一列的垂直合并处理</p>
+            
+            <h3>测试数据:</h3>
+            <table class="test-table">
+                <tr>
+                    <th>学科</th>
+                    <th>课程</th>
+                    <th>老师</th>
+                    <th>教室状态</th>
+                </tr>
+                <tr>
+                    <td>数学</td>
+                    <td>高等数学</td>
+                    <td>张教授</td>
+                    <td rowspan="3" class="merge-demo">理科楼可用</td>
+                </tr>
+                <tr>
+                    <td>数学</td>
+                    <td>线性代数</td>
+                    <td>李教授</td>
+                </tr>
+                <tr>
+                    <td>数学</td>
+                    <td>概率统计</td>
+                    <td>王教授</td>
+                </tr>
+                <tr>
+                    <td>物理</td>
+                    <td>大学物理</td>
+                    <td>赵教授</td>
+                    <td rowspan="2" class="merge-demo">实验楼维修中</td>
+                </tr>
+                <tr>
+                    <td>物理</td>
+                    <td>理论力学</td>
+                    <td>钱教授</td>
+                </tr>
+                <tr>
+                    <td>化学</td>
+                    <td>有机化学</td>
+                    <td>孙教授</td>
+                    <td rowspan="2" class="merge-demo">化学楼正常</td>
+                </tr>
+                <tr>
+                    <td>化学</td>
+                    <td>无机化学</td>
+                    <td>周教授</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(3)">复制测试数据</button>
+            
+            <div class="note">
+                <strong>测试要点:</strong>
+                <ul>
+                    <li>最后列的rowspan合并处理</li>
+                    <li>边界位置合并的正确性</li>
+                    <li>不同长度合并的处理</li>
+                    <li>合并内容的完整显示</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 测试用例 4: 跨多行大合并 -->
+        <div class="test-section">
+            <h2 class="test-title">测试用例 4: 跨多行大合并</h2>
+            <p>测试大范围跨行合并的处理</p>
+            
+            <h3>测试数据:</h3>
+            <table class="test-table">
+                <tr>
+                    <th>季度</th>
+                    <th>月份</th>
+                    <th>业绩目标</th>
+                    <th>完成情况</th>
+                    <th>备注</th>
+                </tr>
+                <tr>
+                    <td rowspan="6" class="merge-demo">Q1<br/>第一季度</td>
+                    <td>1月</td>
+                    <td>500万</td>
+                    <td>520万</td>
+                    <td>超额完成</td>
+                </tr>
+                <tr>
+                    <td>2月</td>
+                    <td>480万</td>
+                    <td>465万</td>
+                    <td>春节影响</td>
+                </tr>
+                <tr>
+                    <td>3月</td>
+                    <td>600万</td>
+                    <td>580万</td>
+                    <td>接近目标</td>
+                </tr>
+                <tr>
+                    <td>1月</td>
+                    <td>区域A</td>
+                    <td>200万</td>
+                    <td rowspan="3" class="merge-demo">整体表现<br/>优秀，<br/>继续保持</td>
+                </tr>
+                <tr>
+                    <td>2月</td>
+                    <td>区域B</td>
+                    <td>180万</td>
+                </tr>
+                <tr>
+                    <td>3月</td>
+                    <td>区域C</td>
+                    <td>195万</td>
+                </tr>
+                <tr>
+                    <td rowspan="3" class="merge-demo">Q2<br/>第二季度</td>
+                    <td>4月</td>
+                    <td>550万</td>
+                    <td>530万</td>
+                    <td>稍有差距</td>
+                </tr>
+                <tr>
+                    <td>5月</td>
+                    <td>580万</td>
+                    <td>595万</td>
+                    <td>超额完成</td>
+                </tr>
+                <tr>
+                    <td>6月</td>
+                    <td>620万</td>
+                    <td>610万</td>
+                    <td>接近目标</td>
+                </tr>
+            </table>
+            
+            <button class="copy-btn" onclick="copyTableData(4)">复制测试数据</button>
+            
+            <div class="note">
+                <strong>测试要点:</strong>
+                <ul>
+                    <li>大范围rowspan合并处理</li>
+                    <li>多个不同列的同时合并</li>
+                    <li>合并单元格内换行内容</li>
+                    <li>复杂表格结构的完整性</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 功能测试区域 -->
+        <div class="test-section">
+            <h2 class="test-title">交互式测试区域</h2>
+            <p>使用主应用功能进行实时测试</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="../index.html" target="_blank" class="copy-btn" style="display: inline-block; padding: 15px 30px; font-size: 1.1rem; text-decoration: none;">
+                    打开主应用进行测试 →
+                </a>
+            </div>
+            
+            <h3>测试步骤:</h3>
+            <ol style="line-height: 1.8;">
+                <li>复制上面任一测试表格数据</li>
+                <li>在主应用中点击"粘贴表格数据"按钮</li>
+                <li>检查预览区域是否正确显示合并结构</li>
+                <li>选择不同的导出格式验证输出</li>
+                <li>特别注意"保持合并单元格"选项的效果</li>
+            </ol>
+            
+            <h3>列合并验证要点:</h3>
+            <ul style="line-height: 1.8;">
+                <li>✓ HTML格式中rowspan属性正确</li>
+                <li>✓ 合并单元格在正确的位置</li>
+                <li>✓ 被合并的空行正确处理</li>
+                <li>✓ Markdown格式中垂直合并标注</li>
+                <li>✓ Textile格式中/n.语法正确</li>
+                <li>✓ RST格式中合并边框正确</li>
+                <li>✓ 多行内容正确显示</li>
+                <li>✓ 不同列位置合并都正确</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 复制测试表格数据到剪贴板
+        function copyTableData(testCase) {
+            const testData = {
+                1: `公司	部门	员工	职位
+阿里巴巴	技术部	张三	高级工程师
+	技术部	李四	架构师
+	产品部	王五	产品经理
+	设计部	赵六	UI设计师
+腾讯	游戏部	钱七	游戏策划
+	社交部	孙八	后端工程师
+	广告部	周九	数据分析师`,
+                2: `项目	模块	功能	开发者	状态
+电商平台	用户系统	用户注册	张三	已完成
+电商平台		用户登录	李四	已完成
+电商平台		密码找回	王五	开发中
+电商平台	支付系统	支付宝支付	赵六	已完成
+电商平台		微信支付	钱七	测试中
+移动App	推送系统	消息推送	孙八	计划中
+移动App		活动推送	周九	计划中`,
+                3: `学科	课程	老师	教室状态
+数学	高等数学	张教授	理科楼可用
+数学	线性代数	李教授	
+数学	概率统计	王教授	
+物理	大学物理	赵教授	实验楼维修中
+物理	理论力学	钱教授	
+化学	有机化学	孙教授	化学楼正常
+化学	无机化学	周教授	`,
+                4: `季度	月份	业绩目标	完成情况	备注
+Q1
+第一季度	1月	500万	520万	超额完成
+	2月	480万	465万	春节影响
+	3月	600万	580万	接近目标
+	1月	区域A	200万	整体表现
+优秀，
+继续保持
+	2月	区域B	180万	
+	3月	区域C	195万	
+Q2
+第二季度	4月	550万	530万	稍有差距
+	5月	580万	595万	超额完成
+	6月	620万	610万	接近目标`
+            };
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(testData[testCase]).then(() => {
+                    alert('测试数据已复制到剪贴板！\n现在可以在主应用中进行粘贴测试。');
+                }).catch(err => {
+                    console.error('复制失败:', err);
+                    fallbackCopy(testData[testCase]);
+                });
+            } else {
+                fallbackCopy(testData[testCase]);
+            }
+        }
+        
+        // 后备复制方法
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                alert('测试数据已复制到剪贴板！\n现在可以在主应用中进行粘贴测试。');
+            } catch (err) {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制测试数据。');
+            }
+            document.body.removeChild(textArea);
+        }
+    </script>
+</body>
+</html> 

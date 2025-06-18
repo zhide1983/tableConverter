@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TableClip - 测试套件</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            margin: 10px 0 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .test-card {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 25px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .test-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            background: white;
+        }
+        
+        .test-card h3 {
+            margin: 0 0 15px;
+            color: #667eea;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .test-card .icon {
+            font-size: 1.5rem;
+        }
+        
+        .test-card p {
+            margin: 0 0 20px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .test-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px;
+        }
+        
+        .test-list li {
+            padding: 5px 0;
+            color: #555;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .test-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .test-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .test-link:hover {
+            background: #5a6fd8;
+            transform: translateY(-1px);
+        }
+        
+        .stats {
+            background: #e8f4fd;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 30px;
+        }
+        
+        .stats h3 {
+            margin: 0 0 15px;
+            color: #667eea;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .navigation {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .nav-link {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 12px 24px;
+            background: #f8f9fa;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #28a745;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        .badge.new {
+            background: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 TableClip 测试套件</h1>
+            <p>全面的表格转换功能测试集合</p>
+        </div>
+        
+        <div class="content">
+            <div class="stats">
+                <h3>📊 测试覆盖统计</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">15+</span>
+                        <span class="stat-label">测试用例</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">4</span>
+                        <span class="stat-label">输出格式</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">8+</span>
+                        <span class="stat-label">合并场景</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">HTML样式</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-grid">
+                <div class="test-card">
+                    <div class="badge">NEW</div>
+                    <h3>
+                        <span class="icon">📋</span>
+                        基础功能测试
+                    </h3>
+                    <p>测试基本的表格解析、格式转换和用户界面功能。包含剪贴板权限验证和错误处理测试。</p>
+                    <ul class="test-list">
+                        <li>简单表格解析</li>
+                        <li>四种格式导出</li>
+                        <li>剪贴板权限测试</li>
+                        <li>错误处理验证</li>
+                    </ul>
+                    <a href="basic-test.html" class="test-link">开始测试</a>
+                </div>
+
+                <div class="test-card">
+                    <div class="badge">CORE</div>
+                    <h3>
+                        <span class="icon">📏</span>
+                        行合并测试
+                    </h3>
+                    <p>专门测试各种行合并场景，包括表头合并、数据行任意位置合并等复杂情况。</p>
+                    <ul class="test-list">
+                        <li>表头行合并</li>
+                        <li>数据行开头合并</li>
+                        <li>数据行中间合并</li>
+                        <li>数据行末尾合并</li>
+                        <li>跨多列合并</li>
+                    </ul>
+                    <a href="merge-row.html" class="test-link">开始测试</a>
+                </div>
+
+                <div class="test-card">
+                    <div class="badge">CORE</div>
+                    <h3>
+                        <span class="icon">📐</span>
+                        列合并测试
+                    </h3>
+                    <p>测试各种列合并场景，验证垂直方向的单元格合并在不同格式下的转换效果。</p>
+                    <ul class="test-list">
+                        <li>第一列合并</li>
+                        <li>中间列合并</li>
+                        <li>最后列合并</li>
+                        <li>跨多行合并</li>
+                        <li>不连续合并</li>
+                    </ul>
+                    <a href="merge-col.html" class="test-link">开始测试</a>
+                </div>
+
+                <div class="test-card">
+                    <div class="badge">ADVANCED</div>
+                    <h3>
+                        <span class="icon">🔲</span>
+                        区域合并测试
+                    </h3>
+                    <p>测试复杂的矩形区域合并、不规则形状合并和多个分离合并区域的处理效果。</p>
+                    <ul class="test-list">
+                        <li>局部矩形合并</li>
+                        <li>不规则形状合并</li>
+                        <li>多个分离区域</li>
+                        <li>嵌套合并结构</li>
+                        <li>边界重叠处理</li>
+                    </ul>
+                    <a href="merge-area.html" class="test-link">开始测试</a>
+                </div>
+
+                <div class="test-card">
+                    <h3>
+                        <span class="icon">⚠️</span>
+                        边界情况测试
+                    </h3>
+                    <p>测试各种边界情况和异常场景，确保工具的稳定性和容错能力。</p>
+                    <ul class="test-list">
+                        <li>空表格处理</li>
+                        <li>单行单列表格</li>
+                        <li>全合并表格</li>
+                        <li>特殊字符处理</li>
+                        <li>超大表格测试</li>
+                    </ul>
+                    <a href="edge-cases.html" class="test-link">开始测试</a>
+                </div>
+
+                <div class="test-card">
+                    <div class="badge">NEW</div>
+                    <h3>
+                        <span class="icon">🎨</span>
+                        新功能测试
+                    </h3>
+                    <p>测试最新版本的功能增强，包括Markdown智能列宽和HTML样式选项。</p>
+                    <ul class="test-list">
+                        <li>Markdown自适应列宽</li>
+                        <li>HTML样式预设</li>
+                        <li>阴阳行背景</li>
+                        <li>标题行列加粗</li>
+                        <li>响应式表格</li>
+                    </ul>
+                    <a href="new-features.html" class="test-link">开始测试</a>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <h3>🎯 快速导航</h3>
+                <a href="../index.html" class="nav-link">📊 返回主应用</a>
+                <a href="../example.html" class="nav-link">📖 查看示例</a>
+                <a href="../test.html" class="nav-link">🧩 快速测试</a>
+                <a href="../README.md" class="nav-link">📚 查看文档</a>
+                <a href="../requirement.md" class="nav-link">📋 需求文档</a>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e9ecef; color: #666;">
+                <p><strong>TableClip v1.1.0</strong> - 完整测试套件</p>
+                <p>💡 提示：建议按顺序进行测试，从基础功能开始，逐步深入到复杂场景</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
