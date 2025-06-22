@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML表格宽度和对齐功能测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .test-title {
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .test-options {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        
+        .option-group {
+            margin-bottom: 10px;
+        }
+        
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        select {
+            margin-right: 20px;
+            padding: 5px;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background: #5a6fd8;
+        }
+        
+        .result-container {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML表格宽度和对齐功能测试</h1>
+    
+    <div class="test-container">
+        <h2 class="test-title">功能测试</h2>
+        
+        <div class="test-options">
+            <div class="option-group">
+                <label for="widthSelect">表格宽度:</label>
+                <select id="widthSelect">
+                    <option value="auto">自动宽度</option>
+                    <option value="fit-content">适应内容</option>
+                    <option value="100%">100%宽度</option>
+                    <option value="800px">800px固定</option>
+                    <option value="600px">600px固定</option>
+                </select>
+                
+                <label for="hAlignSelect">水平对齐:</label>
+                <select id="hAlignSelect">
+                    <option value="left">左对齐</option>
+                    <option value="center">居中对齐</option>
+                    <option value="right">右对齐</option>
+                </select>
+                
+                <label for="vAlignSelect">垂直对齐:</label>
+                <select id="vAlignSelect">
+                    <option value="top">顶部对齐</option>
+                    <option value="middle">中间对齐</option>
+                    <option value="bottom">底部对齐</option>
+                </select>
+            </div>
+            
+            <button onclick="generateTestTable()">生成测试表格</button>
+            <button onclick="copyTestData()">复制测试数据</button>
+            <button onclick="window.open('index.html', '_blank')">打开主应用</button>
+        </div>
+        
+        <div id="resultContainer" class="result-container">
+            <p>点击"生成测试表格"来查看效果，或点击"复制测试数据"然后在主应用中测试。</p>
+        </div>
+    </div>
+    
+    <div class="test-container">
+        <h2 class="test-title">测试说明</h2>
+        <ul>
+            <li><strong>表格宽度控制：</strong>
+                <ul>
+                    <li>自动宽度：表格宽度由内容自动决定</li>
+                    <li>适应内容：表格宽度刚好容纳内容，不会过宽</li>
+                    <li>100%宽度：表格占满容器的全部宽度</li>
+                    <li>固定宽度：表格具有指定的固定宽度</li>
+                </ul>
+            </li>
+            <li><strong>对齐方式控制：</strong>
+                <ul>
+                    <li>水平对齐：控制文本在单元格内的左中右对齐</li>
+                    <li>垂直对齐：控制文本在单元格内的上中下对齐</li>
+                </ul>
+            </li>
+            <li><strong>测试步骤：</strong>
+                <ol>
+                    <li>选择不同的宽度和对齐选项</li>
+                    <li>点击"复制测试数据"</li>
+                    <li>在主应用中粘贴数据</li>
+                    <li>选择HTML格式并配置新增的选项</li>
+                    <li>查看生成的HTML代码和预览效果</li>
+                </ol>
+            </li>
+        </ul>
+    </div>
+
+    <script src="js/tableParser.js"></script>
+    <script src="js/formatExporters.js"></script>
+    <script>
+        // 测试表格数据
+        const testTableData = {
+            rows: [
+                {
+                    cells: [
+                        { content: '姓名', type: 'th', colspan: 1, rowspan: 1, styles: {} },
+                        { content: '部门', type: 'th', colspan: 1, rowspan: 1, styles: {} },
+                        { content: '职位', type: 'th', colspan: 1, rowspan: 1, styles: {} },
+                        { content: '工作年限', type: 'th', colspan: 1, rowspan: 1, styles: {} }
+                    ],
+                    type: 'header'
+                },
+                {
+                    cells: [
+                        { content: '张三', type: 'td', colspan: 1, rowspan: 1, styles: {} },
+                        { content: '技术部', type: 'td', colspan: 1, rowspan: 1, styles: {} },
+                        { content: '高级工程师', type: 'td', colspan: 1, rowspan: 1, styles: {} },
+                        { content: '5年', type: 'td', colspan: 1, rowspan: 1, styles: {} }
+                    ],
+                    type: 'data'
+                },
+                {
+                    cells: [
+                        { content: '李四', type: 'td', colspan: 1, rowspan: 1, styles: {} },
+                        { content: '产品部', type: 'td', colspan: 1, rowspan: 1, styles: {} },
+                        { content: '产品经理', type: 'td', colspan: 1, rowspan: 1, styles: {} },
+                        { content: '3年', type: 'td', colspan: 1, rowspan: 1, styles: {} }
+                    ],
+                    type: 'data'
+                },
+                {
+                    cells: [
+                        { content: '王五', type: 'td', colspan: 1, rowspan: 1, styles: {} },
+                        { content: '设计部', type: 'td', colspan: 1, rowspan: 1, styles: {} },
+                        { content: 'UI设计师', type: 'td', colspan: 1, rowspan: 1, styles: {} },
+                        { content: '2年', type: 'td', colspan: 1, rowspan: 1, styles: {} }
+                    ],
+                    type: 'data'
+                }
+            ],
+            maxColumns: 4,
+            hasHeader: true
+        };
+
+        function generateTestTable() {
+            const width = document.getElementById('widthSelect').value;
+            const hAlign = document.getElementById('hAlignSelect').value;
+            const vAlign = document.getElementById('vAlignSelect').value;
+            
+            const exporter = new FormatExporters(testTableData);
+            
+            const options = {
+                preserveMerged: true,
+                includeStyles: true,
+                responsiveTable: false,
+                standalone: false,
+                htmlStyles: {
+                    headerRowBold: true,
+                    headerColBold: false,
+                    alternatingRows: true,
+                    preset: 'default'
+                },
+                tableWidth: width,
+                horizontalAlign: hAlign,
+                verticalAlign: vAlign
+            };
+            
+            const html = exporter.exportToHtml(options);
+            
+            document.getElementById('resultContainer').innerHTML = `
+                <h3>生成的HTML表格预览：</h3>
+                <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+                    ${html}
+                </div>
+                <h3>HTML代码：</h3>
+                <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; overflow-x: auto; font-size: 12px;">${escapeHtml(html)}</pre>
+            `;
+        }
+        
+        function copyTestData() {
+            const testData = `姓名	部门	职位	工作年限
+张三	技术部	高级工程师	5年
+李四	产品部	产品经理	3年
+王五	设计部	UI设计师	2年`;
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(testData).then(() => {
+                    alert('测试数据已复制到剪贴板！\n现在可以在主应用中进行粘贴测试。');
+                }).catch(err => {
+                    console.error('复制失败:', err);
+                    fallbackCopy(testData);
+                });
+            } else {
+                fallbackCopy(testData);
+            }
+        }
+        
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                alert('测试数据已复制到剪贴板！');
+            } catch (err) {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制测试数据。');
+            }
+            document.body.removeChild(textArea);
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html> 

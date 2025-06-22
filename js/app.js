@@ -37,6 +37,9 @@ class TableClipApp {
         this.headerColBoldCb = document.getElementById('headerColBold');
         this.alternatingRowsCb = document.getElementById('alternatingRows');
         this.stylePresetSelect = document.getElementById('stylePreset');
+        this.tableWidthSelect = document.getElementById('tableWidth');
+        this.horizontalAlignSelect = document.getElementById('horizontalAlign');
+        this.verticalAlignSelect = document.getElementById('verticalAlign');
         
         // 显示区域
         this.tablePreview = document.getElementById('tablePreview');
@@ -70,6 +73,9 @@ class TableClipApp {
         this.headerColBoldCb.addEventListener('change', () => this.updateOutput());
         this.alternatingRowsCb.addEventListener('change', () => this.updateOutput());
         this.stylePresetSelect.addEventListener('change', () => this.handleStylePresetChange());
+        this.tableWidthSelect.addEventListener('change', () => this.updateOutput());
+        this.horizontalAlignSelect.addEventListener('change', () => this.updateOutput());
+        this.verticalAlignSelect.addEventListener('change', () => this.updateOutput());
         
         // 输出操作
         this.copyOutputBtn.addEventListener('click', () => this.handleCopyOutput());
@@ -257,6 +263,9 @@ class TableClipApp {
                 alternatingRows: this.alternatingRowsCb.checked,
                 preset: this.stylePresetSelect.value
             };
+            options.tableWidth = this.tableWidthSelect.value;
+            options.horizontalAlign = this.horizontalAlignSelect.value;
+            options.verticalAlign = this.verticalAlignSelect.value;
         }
         
         return options;

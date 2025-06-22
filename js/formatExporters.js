@@ -12,7 +12,10 @@ class FormatExporters {
             includeStyles = true,
             responsiveTable = false,
             standalone = true,
-            htmlStyles = {}
+            htmlStyles = {},
+            tableWidth = 'auto',  // 'auto', 'fit-content', '100%', 或具体数值如'800px'
+            horizontalAlign = 'left',  // 'left', 'center', 'right'
+            verticalAlign = 'top'      // 'top', 'middle', 'bottom'
         } = options;
 
         if (!this.tableData || !this.tableData.rows) {
@@ -26,7 +29,7 @@ class FormatExporters {
             html += '<meta charset="UTF-8">\n';
             html += '<title>导出的表格</title>\n';
             html += '<style>\n';
-            html += this.getEnhancedTableCSS(responsiveTable, htmlStyles);
+            html += this.getEnhancedTableCSS(responsiveTable, htmlStyles, tableWidth, horizontalAlign, verticalAlign);
             html += '</style>\n';
             html += '</head>\n<body>\n';
         }
@@ -37,7 +40,7 @@ class FormatExporters {
         // 生成表头
         if (this.tableData.hasHeader) {
             html += '  <thead>\n';
-            html += this.generateHtmlRow(this.tableData.rows[0], preserveMerged, includeStyles, 2, htmlStyles, 'header');
+            html += this.generateHtmlRow(this.tableData.rows[0], preserveMerged, includeStyles, 2, htmlStyles, 'header', 0, horizontalAlign, verticalAlign);
             html += '  </thead>\n';
         }
 
@@ -46,7 +49,7 @@ class FormatExporters {
         if (startRow < this.tableData.rows.length) {
             html += '  <tbody>\n';
             for (let i = startRow; i < this.tableData.rows.length; i++) {
-                html += this.generateHtmlRow(this.tableData.rows[i], preserveMerged, includeStyles, 2, htmlStyles, 'body', i - startRow);
+                html += this.generateHtmlRow(this.tableData.rows[i], preserveMerged, includeStyles, 2, htmlStyles, 'body', i - startRow, horizontalAlign, verticalAlign);
             }
             html += '  </tbody>\n';
         }
@@ -63,7 +66,7 @@ class FormatExporters {
     /**
      * 生成HTML行
      */
-    generateHtmlRow(row, preserveMerged, includeStyles, indent = 0, htmlStyles = {}, rowType = 'body', rowIndex = 0) {
+    generateHtmlRow(row, preserveMerged, includeStyles, indent = 0, htmlStyles = {}, rowType = 'body', rowIndex = 0, horizontalAlign = 'left', verticalAlign = 'top') {
         const spaces = ' '.repeat(indent);
         let rowClass = '';
         
@@ -97,12 +100,24 @@ class FormatExporters {
                 if (cell.rowspan > 1) cellHtml += ` rowspan="${cell.rowspan}"`;
             }
 
+            // 添加原始样式和对齐样式
+            let styles = [];
+            
+            // 添加对齐样式
+            const textAlign = horizontalAlign === 'center' ? 'center' : horizontalAlign === 'right' ? 'right' : 'left';
+            const vertAlign = verticalAlign === 'middle' ? 'middle' : verticalAlign === 'bottom' ? 'bottom' : 'top';
+            styles.push(`text-align: ${textAlign}`);
+            styles.push(`vertical-align: ${vertAlign}`);
+            
             // 添加原始样式
             if (includeStyles && cell.styles && Object.keys(cell.styles).length > 0) {
-                const styleStr = Object.entries(cell.styles)
-                    .map(([key, value]) => `${this.camelToKebab(key)}: ${value}`)
-                    .join('; ');
-                cellHtml += ` style="${styleStr}"`;
+                Object.entries(cell.styles).forEach(([key, value]) => {
+                    styles.push(`${this.camelToKebab(key)}: ${value}`);
+                });
+            }
+            
+            if (styles.length > 0) {
+                cellHtml += ` style="${styles.join('; ')}"`;
             }
 
             cellHtml += `>${this.escapeHtml(cell.content)}</${tag}>\n`;
@@ -449,7 +464,7 @@ class FormatExporters {
     /**
      * 获取增强的表格CSS样式
      */
-    getEnhancedTableCSS(responsive = false, htmlStyles = {}) {
+    getEnhancedTableCSS(responsive = false, htmlStyles = {}, tableWidth = 'auto', horizontalAlign = 'left', verticalAlign = 'top') {
         const {
             headerRowBold = true,
             headerColBold = false,
@@ -474,6 +489,40 @@ class FormatExporters {
                 css = this.getDefaultTableCSS(false); // 使用原有默认样式作为基础
                 break;
         }
+
+        // 添加表格宽度和基础对齐样式
+        let widthAndAlignStyles = '';
+        
+        // 表格宽度控制
+        if (tableWidth !== 'auto') {
+            if (tableWidth === 'fit-content') {
+                widthAndAlignStyles += `
+table {
+    width: auto !important;
+    table-layout: auto !important;
+}
+`;
+            } else {
+                widthAndAlignStyles += `
+table {
+    width: ${tableWidth} !important;
+}
+`;
+            }
+        }
+        
+        // 默认对齐方式（会被内联样式覆盖）
+        const textAlign = horizontalAlign === 'center' ? 'center' : horizontalAlign === 'right' ? 'right' : 'left';
+        const vertAlign = verticalAlign === 'middle' ? 'middle' : verticalAlign === 'bottom' ? 'bottom' : 'top';
+        
+        widthAndAlignStyles += `
+th, td {
+    text-align: ${textAlign};
+    vertical-align: ${vertAlign};
+}
+`;
+        
+        css += widthAndAlignStyles;
 
         // 添加增强样式
         let enhancedStyles = '';
